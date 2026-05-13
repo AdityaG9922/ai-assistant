@@ -1,3 +1,4 @@
+alert("chat.js loaded");
 const sendBtn = document.getElementById("send-btn");
 const input = document.getElementById("chat-input");
 const messages = document.getElementById("messages");
