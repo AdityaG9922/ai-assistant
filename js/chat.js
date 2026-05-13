@@ -37,19 +37,19 @@ const state = {
 const dom = (() => {
   let cache = {};
   const selectors = {
-    chatWindow:      '#chat-window',
-    inputField:      '#chat-input',
-    sendBtn:         '#send-btn',
-    modeToggle:      '#mode-toggle',
-    multiToggle:     '#multi-ai-toggle',
-    searchToggle:    '#search-toggle',
-    statusBar:       '#status-bar',
-    errorBanner:     '#error-banner',
-    errorMsg:        '#error-message',
-    errorClose:      '#error-close',
-    inputWrapper:    '#input-wrapper',
-    charCounter:     '#char-counter',
-    agentSelector:   '#agent-selector',
+  chatWindow:      '#messages',
+inputField:      '#chat-input',
+sendBtn:         '#send-btn',
+modeToggle:      null,
+multiToggle:     '#multi-toggle',
+searchToggle:    '#search-btn',
+statusBar:       '#status-indicator',
+errorBanner:     null,
+errorMsg:        null,
+errorClose:      null,
+inputWrapper:    '.input-wrapper',
+charCounter:     null,
+agentSelector:   null,
   };
 
   return new Proxy({}, {
@@ -470,3 +470,7 @@ export {
   handleSend,
   clearInput,
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  initChat();
+});
