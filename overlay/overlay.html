@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self';
+             script-src 'self';
+             style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+             font-src 'self' https://fonts.gstatic.com;">
+  <title>Syntax Surge — Voice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+
+  <div class="overlay-shell" id="overlay-shell">
+
+    <!-- Drag handle -->
+    <div class="drag-handle" id="drag-handle"></div>
+
+    <!-- Close -->
+    <button class="overlay-close" id="overlay-close">✕</button>
+
+    <!-- Central orb -->
+    <div class="orb-container">
+      <div class="orb-ring orb-ring-3"></div>
+      <div class="orb-ring orb-ring-2"></div>
+      <div class="orb-ring orb-ring-1"></div>
+      <div class="orb" id="main-orb">
+        <div class="orb-inner"></div>
+      </div>
+    </div>
+
+    <!-- Status label -->
+    <div class="overlay-status" id="overlay-status">Press & hold to speak</div>
+
+    <!-- Transcript -->
+    <div class="transcript-box" id="transcript-box">
+      <span class="transcript-text" id="transcript-text"></span>
+    </div>
+
+    <!-- Waveform -->
+    <div class="waveform" id="waveform">
+      <div class="wave-bar" style="animation-delay: 0.0s"></div>
+      <div class="wave-bar" style="animation-delay: 0.1s"></div>
+      <div class="wave-bar" style="animation-delay: 0.2s"></div>
+      <div class="wave-bar" style="animation-delay: 0.05s"></div>
+      <div class="wave-bar" style="animation-delay: 0.15s"></div>
+      <div class="wave-bar" style="animation-delay: 0.25s"></div>
+      <div class="wave-bar" style="animation-delay: 0.08s"></div>
+      <div class="wave-bar" style="animation-delay: 0.18s"></div>
+      <div class="wave-bar" style="animation-delay: 0.12s"></div>
+      <div class="wave-bar" style="animation-delay: 0.22s"></div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="overlay-actions">
+      <button class="ov-btn ov-mic" id="mic-btn">
+        <span class="ov-btn-icon">🎙</span>
+        <span>Speak</span>
+      </button>
+      <button class="ov-btn ov-send" id="send-btn" disabled>
+        <span class="ov-btn-icon">↗</span>
+        <span>Send</span>
+      </button>
+    </div>
+
+    <!-- Shortcut hint -->
+    <div class="overlay-hint">Ctrl+F5 to open · Esc to close</div>
+
+  </div>
+
+  <script src="../voice/voice-processor.js"></script>
+  <script src="overlay.js"></script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+/* ═══════════════════════════════════════════════════════════
+   Syntax Surge — Overlay Stylesheet
+   Floating voice activation popup
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --neon-blue:   #00d4ff;
+  --neon-purple: #9b5cff;
+  --neon-cyan:   #00ffe7;
+  --neon-pink:   #ff2d78;
+  --bg-void:     #030508;
+  --bg-glass:    rgba(8, 10, 20, 0.82);
+  --text-primary: #e8eeff;
+  --text-muted:  #404860;
+  --border-glass: rgba(0, 212, 255, 0.15);
+  --font-display: 'Rajdhani', sans-serif;
+  --font-mono:   'Space Mono', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+}
+
+/* ── Shell ─────────────────────────────────────────────────── */
+.overlay-shell {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+  padding: 32px 24px 24px;
+  animation: overlay-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 255, 0.08),
+    0 24px 64px rgba(0, 0, 0, 0.8),
+    0 0 80px rgba(0, 212, 255, 0.08);
+}
+
+.overlay-shell.closing {
+  animation: overlay-out 0.25s ease forwards;
+}
+
+/* ── Drag handle ───────────────────────────────────────────── */
+.drag-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  -webkit-app-region: drag;
+  cursor: grab;
+}
+
+/* ── Close button ──────────────────────────────────────────── */
+.overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: all 0.2s;
+  -webkit-app-region: no-drag;
+}
+
+.overlay-close:hover {
+  background: rgba(255, 45, 120, 0.15);
+  color: var(--neon-pink);
+}
+
+/* ── Orb ───────────────────────────────────────────────────── */
+.orb-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid;
+  opacity: 0.2;
+  animation: ring-pulse 3s ease-in-out infinite;
+}
+
+.orb-ring-1 {
+  width: 100%;
+  height: 100%;
+  border-color: var(--neon-blue);
+  animation-delay: 0s;
+}
+
+.orb-ring-2 {
+  width: 80%;
+  height: 80%;
+  border-color: var(--neon-purple);
+  animation-delay: 0.4s;
+}
+
+.orb-ring-3 {
+  width: 120%;
+  height: 120%;
+  border-color: var(--neon-cyan);
+  animation-delay: 0.8s;
+  opacity: 0.1;
+}
+
+.orb {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%,
+    rgba(0, 255, 231, 0.9),
+    rgba(0, 212, 255, 0.8),
+    rgba(155, 92, 255, 0.7)
+  );
+  box-shadow:
+    0 0 30px rgba(0, 212, 255, 0.5),
+    0 0 60px rgba(0, 212, 255, 0.2),
+    inset 0 0 20px rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: orb-idle 4s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+.orb-inner {
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
+}
+
+.orb:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 40px rgba(0, 212, 255, 0.7),
+    0 0 80px rgba(0, 212, 255, 0.3);
+}
+
+.orb.listening {
+  animation: orb-listen 0.6s ease-in-out infinite;
+  box-shadow:
+    0 0 50px rgba(0, 212, 255, 0.8),
+    0 0 100px rgba(0, 212, 255, 0.4),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* ── Status ────────────────────────────────────────────────── */
+.overlay-status {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── Transcript box ────────────────────────────────────────── */
+.transcript-box {
+  min-height: 48px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-glass);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.transcript-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.transcript-text.interim {
+  color: rgba(232, 238, 255, 0.5);
+  font-style: italic;
+}
+
+/* ── Waveform ──────────────────────────────────────────────── */
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.waveform.active { opacity: 1; }
+
+.wave-bar {
+  width: 3px;
+  height: 8px;
+  background: var(--neon-blue);
+  border-radius: 2px;
+  transform-origin: center;
+  box-shadow: 0 0 4px var(--neon-blue);
+}
+
+.waveform.active .wave-bar {
+  animation: wave-bar 0.8s ease-in-out infinite;
+}
+
+/* ── Action buttons ────────────────────────────────────────── */
+.overlay-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.ov-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border-glass);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ov-btn-icon { font-size: 14px; }
+
+.ov-mic {
+  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.ov-mic:hover {
+  background: rgba(0, 212, 255, 0.2);
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.3);
+}
+
+.ov-mic.active {
+  background: rgba(255, 45, 120, 0.15);
+  border-color: rgba(255, 45, 120, 0.4);
+  color: #ff2d78;
+  animation: pulse-border 1.2s ease-in-out infinite;
+}
+
+.ov-send {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(155, 92, 255, 0.3));
+  border-color: rgba(0, 212, 255, 0.4);
+}
+
+.ov-send:hover:not(:disabled) {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.ov-send:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Hint ──────────────────────────────────────────────────── */
+.overlay-hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes overlay-in {
+  from { opacity: 0; transform: scale(0.88) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes overlay-out {
+  from { opacity: 1; transform: scale(1)    translateY(0);    }
+  to   { opacity: 0; transform: scale(0.88) translateY(12px); }
+}
+
+@keyframes orb-idle {
+  0%, 100% { transform: scale(1);    }
+  50%       { transform: scale(1.03); }
+}
+
+@keyframes orb-listen {
+  0%   { transform: scale(1);    box-shadow: 0 0 30px rgba(0,212,255,0.5); }
+  50%  { transform: scale(1.08); box-shadow: 0 0 60px rgba(0,212,255,0.9); }
+  100% { transform: scale(1);    box-shadow: 0 0 30px rgba(0,212,255,0.5); }
+}
+
+@keyframes ring-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(1);    }
+  50%       { opacity: 0.35; transform: scale(1.04); }
+}
+
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50%       { transform: scaleY(1.0); }
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,45,120,0.4); }
+  50%       { box-shadow: 0 0 0 4px rgba(255,45,120,0); }
+}

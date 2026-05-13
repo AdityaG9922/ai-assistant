@@ -1,0 +1,124 @@
+/* ═══════════════════════════════════════════════════════════
+   Syntax Surge — Animations
+   Optimized for older hardware (GPU-safe transforms only)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Orb breathe (logo) ──────────────────────────────────────── */
+@keyframes orb-breathe {
+  0%, 100% { box-shadow: 0 0 8px var(--neon-blue), 0 0 16px rgba(0, 212, 255, 0.3); }
+  50%       { box-shadow: 0 0 14px var(--neon-blue), 0 0 28px rgba(0, 212, 255, 0.5); }
+}
+
+/* ── Thinking dots ───────────────────────────────────────────── */
+@keyframes dot-bounce {
+  0%, 60%, 100% { transform: translateY(0);  opacity: 0.4; }
+  30%           { transform: translateY(-5px); opacity: 1;   }
+}
+
+/* ── Pulse border (voice active) ─────────────────────────────── */
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 45, 120, 0.4); }
+  50%      { box-shadow: 0 0 0 4px rgba(255, 45, 120, 0); }
+}
+
+/* ── Fade in/out for system messages ─────────────────────────── */
+@keyframes fade-in-out {
+  0%   { opacity: 0; transform: translateY(4px); }
+  15%  { opacity: 1; transform: translateY(0);   }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Glow pulse for overlay orb ─────────────────────────────── */
+@keyframes orb-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 212, 255, 0.2);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.8), 0 0 100px rgba(0, 212, 255, 0.3);
+  }
+}
+
+/* ── Orb listening animation ─────────────────────────────────── */
+@keyframes orb-listen {
+  0%   { transform: scale(1);    filter: hue-rotate(0deg);   }
+  25%  { transform: scale(1.08); filter: hue-rotate(30deg);  }
+  50%  { transform: scale(1.04); filter: hue-rotate(60deg);  }
+  75%  { transform: scale(1.10); filter: hue-rotate(20deg);  }
+  100% { transform: scale(1);    filter: hue-rotate(0deg);   }
+}
+
+/* ── Waveform bars ───────────────────────────────────────────── */
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50%      { transform: scaleY(1.0); }
+}
+
+/* ── Overlay slide in ───────────────────────────────────────── */
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ── Overlay slide out ──────────────────────────────────────── */
+@keyframes overlay-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+}
+
+/* ── Glow border sweep ──────────────────────────────────────── */
+@keyframes border-sweep {
+  0%   { background-position: 0% 50%;   }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%;   }
+}
+
+/* ── Fade slide up (messages) ───────────────────────────────── */
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Scan line effect ───────────────────────────────────────── */
+@keyframes scan {
+  0%   { transform: translateY(-100%); opacity: 0.4; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ── Flicker (startup) ──────────────────────────────────────── */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92%       { opacity: 1; }
+  93%       { opacity: 0.8; }
+  94%       { opacity: 1; }
+  96%       { opacity: 0.9; }
+  97%       { opacity: 1; }
+}
+
+/* ── Utility: reduce motion for accessibility ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

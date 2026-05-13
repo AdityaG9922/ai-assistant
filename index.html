@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; 
+             script-src 'self'; 
+             style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+             font-src 'self' https://fonts.gstatic.com; 
+             connect-src http://127.0.0.1:47821;
+             img-src 'self' data:;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syntax Surge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/chat.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- ── Ambient background layers ── -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- ── Titlebar (frameless window control) ── -->
+  <header class="titlebar" id="titlebar">
+    <div class="titlebar-drag-region">
+      <div class="titlebar-logo">
+        <div class="logo-orb"></div>
+        <span class="logo-text">SYNTAX SURGE</span>
+        <span class="logo-version">v1.0</span>
+      </div>
+    </div>
+
+    <div class="titlebar-controls">
+      <div id="status-indicator" class="status-dot">● Ready</div>
+      <button class="tb-btn settings-open-btn" title="Settings" id="settings-btn">⚙</button>
+      <button class="tb-btn" title="Minimize" id="min-btn">─</button>
+      <button class="tb-btn" title="Maximize" id="max-btn">▢</button>
+      <button class="tb-btn tb-close" title="Hide to Tray" id="close-btn">✕</button>
+    </div>
+  </header>
+
+  <!-- ── Main layout ── -->
+  <main class="app-layout">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+
+        <button class="nav-btn active" data-section="chat" title="Chat">
+          <span class="nav-icon">◈</span>
+          <span class="nav-label">Chat</span>
+        </button>
+
+        <button class="nav-btn" data-section="search" title="Search">
+          <span class="nav-icon">◎</span>
+          <span class="nav-label">Search</span>
+        </button>
+
+        <button class="nav-btn" data-section="multi" title="Multi-AI">
+          <span class="nav-icon">⬡</span>
+          <span class="nav-label">Multi AI</span>
+        </button>
+
+        <button class="nav-btn" data-section="settings" title="Settings">
+          <span class="nav-icon">◉</span>
+          <span class="nav-label">Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button class="nav-btn" id="clear-btn" title="Clear Memory">
+          <span class="nav-icon">⟳</span>
+          <span class="nav-label">Clear</span>
+        </button>
+        <button class="nav-btn" id="export-btn" title="Export Chat">
+          <span class="nav-icon">↑</span>
+          <span class="nav-label">Export</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── Content area ── -->
+    <section class="content-area">
+
+      <!-- Chat Panel -->
+      <div class="panel" id="panel-chat">
+
+        <!-- Mode toolbar -->
+        <div class="mode-toolbar">
+          <div class="mode-chips">
+            <button class="mode-chip active" data-mode="general">General</button>
+            <button class="mode-chip" data-mode="study">Study</button>
+            <button class="mode-chip" data-mode="code">Code</button>
+            <button class="mode-chip" data-mode="medical">Medical</button>
+          </div>
+
+          <div class="toolbar-actions">
+            <label class="multi-toggle-label" title="Query all AI providers">
+              <input type="checkbox" id="multi-toggle">
+              <span class="toggle-track">
+                <span class="toggle-thumb"></span>
+              </span>
+              <span class="toggle-text">Multi-AI</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Messages area -->
+        <div class="messages-container" id="messages">
+          <!-- Populated by chat.js -->
+        </div>
+
+        <!-- Input area -->
+        <div class="input-area">
+          <div class="input-wrapper">
+            <textarea
+              id="chat-input"
+              class="chat-textarea"
+              placeholder="Ask anything… (Enter to send, Shift+Enter for newline)"
+              rows="1"
+              autocomplete="off"
+              spellcheck="true"
+            ></textarea>
+
+            <div class="input-actions">
+              <button class="action-btn" id="voice-btn" title="Voice Input (Ctrl+F5)">
+                <span class="btn-icon">🎙</span>
+                <span>Voice</span>
+              </button>
+              <button class="action-btn" id="search-btn" title="Search Mode">
+                <span class="btn-icon">🔍</span>
+                <span>Search</span>
+              </button>
+              <button class="action-btn primary" id="send-btn" title="Send (Enter)">
+                <span class="btn-icon">↗</span>
+                <span>Send</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-hint">
+            Press <kbd>Ctrl</kbd>+<kbd>F5</kbd> for voice overlay anywhere on your desktop
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="panel hidden" id="panel-settings">
+        <div class="settings-panel">
+          <h2 class="settings-title">Settings</h2>
+          <p class="settings-subtitle">Your API keys are stored locally and never shared.</p>
+
+          <div class="settings-section">
+            <h3>AI Providers</h3>
+            <div class="settings-field">
+              <label>OpenAI API Key</label>
+              <input type="password" id="s-openai-key" placeholder="sk-..." class="settings-input">
+              <span class="field-hint">Get from platform.openai.com</span>
+            </div>
+            <div class="settings-field">
+              <label>Anthropic Claude Key</label>
+              <input type="password" id="s-claude-key" placeholder="sk-ant-..." class="settings-input">
+              <span class="field-hint">Get from console.anthropic.com</span>
+            </div>
+            <div class="settings-field">
+              <label>Google Gemini Key</label>
+              <input type="password" id="s-gemini-key" placeholder="AIza..." class="settings-input">
+              <span class="field-hint">Get from aistudio.google.com</span>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Primary Provider</h3>
+            <select id="s-primary" class="settings-select">
+              <option value="openai">OpenAI (GPT-4o-mini)</option>
+              <option value="claude">Anthropic Claude</option>
+              <option value="gemini">Google Gemini</option>
+            </select>
+          </div>
+
+          <div class="settings-section">
+            <h3>Voice</h3>
+            <div class="settings-field">
+              <label>Speech Speed</label>
+              <input type="range" id="s-voice-speed" min="0.5" max="2.0" step="0.1" value="1.0" class="settings-range">
+              <span id="s-voice-speed-val">1.0×</span>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3>Security Info</h3>
+            <div class="security-info">
+              <div class="security-item">✅ No cloud database</div>
+              <div class="security-item">✅ No user accounts</div>
+              <div class="security-item">✅ Session memory only</div>
+              <div class="security-item">✅ API keys stored locally</div>
+              <div class="security-item">✅ No analytics tracking</div>
+            </div>
+          </div>
+
+          <button class="save-btn" id="save-settings-btn">Save Settings</button>
+          <div class="save-status" id="save-status"></div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ── Scripts ── -->
+  <script src="../voice/voice-processor.js"></script>
+  <script src="js/api-client.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
